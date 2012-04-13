@@ -28,7 +28,7 @@ class Puppet::Node::Hiera < Puppet::Indirector::Plain
     raise "You need rubygems to use Hiera" unless Puppet.features.rubygems?
 
     config = YAML.load_file(configfile)
-    #config[:logger] = "puppet"
+    config[:logger] = "puppet"
 
     @hiera = Hiera.new(:config => config)
   end
