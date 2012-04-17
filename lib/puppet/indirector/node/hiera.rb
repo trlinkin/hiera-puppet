@@ -43,7 +43,7 @@ class Puppet::Node::Hiera < Puppet::Indirector::Plain
   # translate namespace resolution operators
     classes.each do |k,v|
       classes[k.gsub('.', '::')] = v
-      classes.delete(k)
+      classes.delete(k) if k =~ /\./
     end    
 
   # put the things Hiera discovered into our node
