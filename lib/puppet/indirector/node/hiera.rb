@@ -37,22 +37,14 @@ class Puppet::Node::Hiera < Puppet::Indirector::Plain
   def populate_node(key, node)
     hscope = populate_scope(key, node)    
 
-  # get classes, automatically removing 'excluded' classes
+  # get classes
     classes = @hiera.lookup('classes', nil, hscope, nil, :hash) || {}
-    excludes = @hiera.lookup('excludes', nil, hscope, nil, :array) || []
 
-  # log hiera class declarations
+  # translate namespace resolution operators
     classes.each do |k,v|
-      Hiera.debug "[#{key}] Hiera class declared: #{k}"
-
-      if excludes.include?(k)
-        Hiera.debug "[#{key}] Hiera class being excluded: #{k}"
-      end
-    end
-
-  # remove excluded classes
-    excludes.each{|i| classes.delete(i) }
-    
+      classes[k.gsub('.', '::')] = v
+      classes.delete(k)
+    end    
 
   # put the things Hiera discovered into our node
     node.classes     = classes
