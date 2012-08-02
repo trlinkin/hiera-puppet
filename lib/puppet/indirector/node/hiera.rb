@@ -22,7 +22,7 @@ class Puppet::Node::Hiera < Puppet::Indirector::Plain
 
 # init Hiera
   def setup_hiera()
-    configfile = File.expand_path(File.join([File.dirname(Puppet.settings[:config]), "..", "hiera", "hiera.yaml"]))
+    configfile = File.join([File.dirname(Puppet.settings[:config]), "hiera.yaml"])
 
     raise "Hiera config file #{configfile} not readable" unless File.exist?(configfile)
     raise "You need rubygems to use Hiera" unless Puppet.features.rubygems?
